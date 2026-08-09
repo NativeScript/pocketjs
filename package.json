@@ -1,0 +1,37 @@
+{
+  "name": "@nativescript/pocketjs",
+  "version": "0.1.0",
+  "description": "PocketJS surfaces inside NativeScript apps: PocketView hosts a sidecar QuickJS guest over the pocketjs Rust core; PocketHostView makes the NativeScript runtime itself the guest engine.",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NativeScript/pocketjs.git"
+  },
+  "homepage": "https://github.com/NativeScript/pocketjs",
+  "keywords": [
+    "nativescript",
+    "pocketjs",
+    "ios",
+    "solid",
+    "embedded-ui"
+  ],
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "platforms/ios"
+  ],
+	"author": {
+		"name": "NativeScript",
+		"email": "oss@nativescript.org"
+	},
+  "publishConfig": {
+    "access": "public"
+  },
+  "nativescript": {
+    "platforms": {
+      "ios": "9.0.0"
+    }
+  }
+}

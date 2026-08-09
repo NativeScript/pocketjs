@@ -1,0 +1,5 @@
+framework module PocketApple {
+  umbrella header "PocketApple.h"
+  export *
+  module * { export * }
+}
