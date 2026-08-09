@@ -21,16 +21,23 @@ const densityProperty = new Property({
   defaultValue: 0,
   valueConverter: (v) => parseInt(v, 10),
 });
+const tickRateProperty = new Property({
+  name: 'tickRate',
+  defaultValue: 60,
+  valueConverter: (v) => parseInt(v, 10),
+});
 
 class PocketView extends View {
   createNativeView() {
     const scale = UIScreen.mainScreen.scale;
     const density = this.density > 0 ? this.density : Math.max(1, Math.min(3, Math.round(scale)));
-    return PocketSurfaceView.surfaceWithLogicalWidthLogicalHeightDensity(
+    const view = PocketSurfaceView.surfaceWithLogicalWidthLogicalHeightDensity(
       this.viewportWidth,
       this.viewportHeight,
       density,
     );
+    view.tickRate = this.tickRate > 0 ? this.tickRate : 60;
+    return view;
   }
 
   initNativeView() {
@@ -120,6 +127,7 @@ srcProperty.register(PocketView);
 viewportWidthProperty.register(PocketView);
 viewportHeightProperty.register(PocketView);
 densityProperty.register(PocketView);
+tickRateProperty.register(PocketView);
 
 exports.PocketView = PocketView;
 
@@ -132,11 +140,13 @@ class PocketHostView extends PocketView {
   createNativeView() {
     const scale = UIScreen.mainScreen.scale;
     const density = this.density > 0 ? this.density : Math.max(1, Math.min(3, Math.round(scale)));
-    return PocketSurfaceView.externalSurfaceWithLogicalWidthLogicalHeightDensity(
+    const view = PocketSurfaceView.externalSurfaceWithLogicalWidthLogicalHeightDensity(
       this.viewportWidth,
       this.viewportHeight,
       density,
     );
+    view.tickRate = this.tickRate > 0 ? this.tickRate : 60;
+    return view;
   }
 
   disposeNativeView() {

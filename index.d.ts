@@ -15,6 +15,14 @@ export declare class PocketView extends View {
   /** Raster scale 1..4; 0 (default) picks the screen scale capped at 3. */
   density: number;
   /**
+   * Ticks per second: the rate the surface rasters at AND the rate the
+   * guest's virtual time advances at. The guest bundle must have been built
+   * for the same rate (`pocket ios build --hz=...`), because every duration
+   * in it is baked into a frame count. 60 (default) everywhere; 120 on
+   * ProMotion devices.
+   */
+  tickRate: number;
+  /**
    * Host -> guest message, delivered at the guest's next frame boundary.
    * Objects are JSON-stringified. The guest reads it from its svc poll pump.
    */
@@ -25,13 +33,14 @@ export declare class PocketView extends View {
  * Direction B: the NativeScript runtime is the guest engine. The pocket core
  * renders native-side; the guest bundle at `src` evaluates in the app's own
  * JS context, so guest code reaches the full iOS platform through the
- * NativeScript metadata bindings. Same `src`/viewport/density contract and
- * `loaded`/`error`/`effect` events as PocketView.
+ * NativeScript metadata bindings. Same `src`/viewport/density/tickRate
+ * contract and `loaded`/`error`/`effect` events as PocketView.
  */
 export declare class PocketHostView extends View {
   src: string;
   viewportWidth: number;
   viewportHeight: number;
   density: number;
+  tickRate: number;
   post(message: unknown): void;
 }
