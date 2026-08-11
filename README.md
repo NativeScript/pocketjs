@@ -38,6 +38,7 @@ const pocket = new PocketView(); // or new PocketHostView()
 pocket.viewportWidth = 480;      // logical viewport, default 480x272
 pocket.viewportHeight = 272;
 pocket.density = 3;              // raster scale 1..4; MUST match the density the guest was built with
+pocket.tickRate = 120;           // ticks/sec, default 60; MUST match the rate the guest was built with
 pocket.on('effect', (event) => { /* guest -> host JSON lines */ });
 pocket.on('loaded', () => {});
 pocket.on('error', (event) => console.error(event.message));
@@ -50,6 +51,11 @@ them at its next frame boundary via its svc poll pump.
 `density = 0` (the default) picks the screen scale capped at 3. Glyph atlases bake at guest build
 time, so a surface density that differs from the guest's build density renders soft text - set it
 explicitly to the build density.
+
+`tickRate` pins both the display link and the guest's virtual-time step. Every duration in a
+guest bundle is baked into a frame count at build time, so the bundle must have been built for
+the same rate (`pocket ios build --hz=120`), and the rate is read once at boot - set it before
+`src`. 60 (the default) everywhere; 120 for ProMotion devices.
 
 ## Platform-contract identity
 
