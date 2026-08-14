@@ -88,6 +88,22 @@ class PocketView extends View {
     }
   }
 
+  [tickRateProperty.setNative](value) {
+    const nativeView = this.nativeViewProtected;
+    const rate = value > 0 ? value : 60;
+    // createNativeView already declared this.tickRate on the surface; the
+    // same value arriving again through property application must not
+    // re-touch the native setter, which rejects any set once the guest
+    // evaluated (the rate is a mount-published fact, ui.__tickHz).
+    if (!nativeView || Number(nativeView.tickRate) === rate) {
+      return;
+    }
+    // A genuinely late change is pushed so the surface can refuse it loudly
+    // through the error event, instead of the display link silently
+    // diverging from the realm's step.
+    nativeView.tickRate = rate;
+  }
+
   _loadApp(src) {
     const nativeView = this.nativeViewProtected;
     if (!nativeView || this._booted) {
@@ -190,6 +206,11 @@ class PocketHostView extends PocketView {
       // else (framework/src/host.ts assertNativeHostContract in pocketjs).
       __host: 'ios-dev',
       __hostAbi: 7,
+      // The rate the core was declared at before this mount (createNativeView
+      // pushes tickRate, which the surface applies immediately in external
+      // mode). Every bundle bakes its rate and refuses a host driving
+      // another; hosts that stay silent are taken as the 60 default.
+      __tickHz: Number(nativeView.tickRate) > 0 ? Number(nativeView.tickRate) : 60,
       __viewport: { w: this.viewportWidth, h: this.viewportHeight },
       __textures: textures,
       __sprites: sprites,

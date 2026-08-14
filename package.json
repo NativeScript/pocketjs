@@ -1,6 +1,6 @@
 {
   "name": "@nativescript/pocketjs",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "PocketJS surfaces inside NativeScript apps: PocketView hosts a sidecar QuickJS guest over the pocketjs Rust core; PocketHostView makes the NativeScript runtime itself the guest engine.",
   "main": "index.js",
   "typings": "index.d.ts",

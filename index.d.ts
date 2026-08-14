@@ -18,8 +18,10 @@ export declare class PocketView extends View {
    * Ticks per second: the rate the surface rasters at AND the rate the
    * guest's virtual time advances at. The guest bundle must have been built
    * for the same rate (`pocket ios build --hz=...`), because every duration
-   * in it is baked into a frame count. 60 (default) everywhere; 120 on
-   * ProMotion devices.
+   * in it is baked into a frame count. Set before `src`: the rate is
+   * published to the guest at mount (`ui.__tickHz`) and a bundle refuses a
+   * host driving any other rate; changing it after the guest booted raises
+   * the `error` event. 60 (default) everywhere; 120 on ProMotion devices.
    */
   tickRate: number;
   /**
